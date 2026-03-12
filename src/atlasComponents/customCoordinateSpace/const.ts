@@ -6,7 +6,7 @@ export const CUSTOM_SYNC_COORDINATE_SPACE = new InjectionToken("CUSTOM_SYNC_COOR
 export const CUSTOM_ASYNC_COORDINATE_SPACE = new InjectionToken("CUSTOM_ASYNC_COORDINATE_SPACE")
 
 export type CCSNavState = {
-  position: [number, number, number],
+  position: [number, number, number]
   orientation: [number, number, number, number]
 }
 
