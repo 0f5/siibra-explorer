@@ -1,0 +1,14 @@
+<ng-template [ngIf]="containerView$ | async" let-containerView>
+    {{ containerView.ccs.label }}
+    <form [formGroup]="containerView.formGroup">
+        <ng-template [ngIf]="containerView.ccs.value$ | async" let-values>
+            <div class="row">
+                <ng-template ngFor [ngForOf]="values" let-index="index" let-value>
+                    <mat-form-field>
+                        <input matInput [formControlName]="index">
+                    </mat-form-field>
+                </ng-template>
+            </div>
+        </ng-template>
+    </form>
+</ng-template>

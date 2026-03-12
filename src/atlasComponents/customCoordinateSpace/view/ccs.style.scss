@@ -1,0 +1,15 @@
+.row
+{
+    
+    display: flex;
+    align-items: center;
+
+    &> .row-fixed
+    {
+        flex: 0 0 auto;
+    }
+    &> *
+    {
+        flex: 1 1 0px;
+    }
+}

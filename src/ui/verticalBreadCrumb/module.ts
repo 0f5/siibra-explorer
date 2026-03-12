@@ -38,6 +38,7 @@ import { AtlasViewerRouterModule } from "src/routerModule";
 import { FileInputModule } from "src/getFileInput/module";
 import { SpotLightModule } from "src/spotlight/spot-light.module";
 import { NeighbourOverlay } from "src/components/neighbourOverlay/neighbourOverlay.component";
+import { CustomCoordinateSpaceModule } from "src/atlasComponents/customCoordinateSpace";
 
 @NgModule({
   imports: [
@@ -77,6 +78,7 @@ import { NeighbourOverlay } from "src/components/neighbourOverlay/neighbourOverl
     FileInputModule,
     SpotLightModule,
     NeighbourOverlay,
+    CustomCoordinateSpaceModule,
 ],
   declarations: [
     VerticalBreadCrumbComponent,

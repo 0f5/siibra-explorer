@@ -23,6 +23,7 @@ import { BANLIST_CONNECTIVITY, EXPERIMENTAL_CONNECTIVITY, WHITELIST_CONNECTIVITY
 import { ViewerMode } from "src/state/atlasSelection/const";
 import { MM_ID, QV_T, SANDS_TYPE } from "src/util/types";
 import { AvailableATPDirective } from "src/atlasComponents/sapi/core/availableATP.directive";
+import { CUSTOM_SYNC_COORDINATE_SPACE, CCSNavState, SyncCustomCS } from "src/atlasComponents/customCoordinateSpace/const";
 
 
 type PasteTarget = "pos"|"zoom"|"rot"
@@ -213,16 +214,15 @@ export class VerticalBreadCrumbComponent {
       }
     })
   )
-  private atlasSelection$ = combineLatest([
-    this.store$.pipe(
-      select(atlasSelection.selectors.navigation),
-      map(nav => nav?.zoom || 1),
-      distinctUntilChanged(),
-    )
-  ]).pipe(
-    map(([ zoom ]) => {
-      return { zoom }
-    })
+  private atlasSelection$ = this.store$.pipe(
+    select(atlasSelection.selectors.navigation),
+    map(nav => {
+      return {
+        zoom: nav?.zoom || 1,
+        position: nav?.position || [0, 0, 0],
+        orientation: nav?.orientation || [0, 0, 0, 1]
+      }
+    }),
   )
 
   userPreferences$ = combineLatest([
@@ -282,7 +282,7 @@ export class VerticalBreadCrumbComponent {
       },
       { useViewer },
       { labels, showExperimental, parcellationVisible, },
-      { zoom },
+      { zoom, position, orientation },
       { inAnnot, outAnnot }]) => {
       
       const parentIds = new Set(allAvailableRegions.flatMap(v => v.parentIds))
@@ -315,7 +315,7 @@ export class VerticalBreadCrumbComponent {
         leafRegions: allAvailableRegions.filter(r => !parentIds.has(r.id)),
         branchRegions: allAvailableRegions.filter(r => parentIds.has(r.id)),
         debug: false,
-        zoom,
+        zoom, position, orientation, 
         inAnnot, outAnnot,
         enableRegionalConnectivity,
         isVolumetric,
@@ -330,9 +330,11 @@ export class VerticalBreadCrumbComponent {
     private annotSvc: ModularUserAnnotationToolService,
     @Inject(NEHUBA_CONFIG_SERVICE_TOKEN) private nehubaConfigSvc: NehubaConfigSvc,
     @Optional()
-    @Inject(LABEL_EVENT_TRIGGER) private labelEventTrigger: (labels: string[]) => void
+    @Inject(LABEL_EVENT_TRIGGER) private labelEventTrigger: (labels: string[]) => void,
+    @Optional()
+    @Inject(CUSTOM_SYNC_COORDINATE_SPACE) public customCoordSpaces: SyncCustomCS[],
   ){
-    
+
     const navStateFromState$: Observable<NavigationState> = this.store$.pipe(
       select(atlasSelection.selectors.navigation),
       filter(v => !!v),
@@ -564,6 +566,23 @@ export class VerticalBreadCrumbComponent {
 
   public getSubParcellation(obj: GroupedParcellation): SxplrParcellation[] {
     return obj.parcellations
+  }
+
+  public handleCcsGoto(payload: Partial<CCSNavState>){
+    const navigation = {}
+    if (payload.orientation) {
+      navigation['orientation'] = payload.orientation
+    }
+    if (payload.position) {
+      navigation['position'] = payload.position.map(v => v * 1e6)
+    }
+    this.store$.dispatch(
+      atlasSelection.actions.navigateTo({
+        navigation,
+        animation: true,
+        physical: true
+      })
+    )
   }
 
   /**

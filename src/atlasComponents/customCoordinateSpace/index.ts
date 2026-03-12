@@ -1,0 +1,1 @@
+export { CustomCoordinateSpaceModule } from "./module"

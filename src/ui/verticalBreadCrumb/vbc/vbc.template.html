@@ -119,6 +119,19 @@
                             </ng-template>
                         </ng-template>
                     </form>
+
+                    <ng-template ngFor [ngForOf]="customCoordSpaces" let-ccs>
+                        <mat-divider></mat-divider>
+                        <custom-coordinate-space
+                            class="subsection sxplr-d-block"
+                            [ccs]="ccs"
+                            [template]="view.selectedATP.template"
+                            [position]="view.position | nmToMm"
+                            [orientation]="view.orientation"
+                            (requestViewerNavChange)="handleCcsGoto($event)">
+                        </custom-coordinate-space>
+                    </ng-template>
+
                 </ng-template>
             </ng-template>
 
