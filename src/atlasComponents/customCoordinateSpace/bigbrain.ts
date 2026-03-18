@@ -18,7 +18,7 @@ export class BigBrainSliceCS implements SyncCustomCS {
       return
     }
     const sliceNr = parseInt(match[0])
-    const ytransl = sliceNr * 0.02 - 70.01
+    const ytransl = sliceNr * 0.02 - 70.01 - 10e-3
     this.#sub.next({
       position: [this.#currCoord[0], ytransl, this.#currCoord[2]],
       orientation: [0, 0, 0, 1],

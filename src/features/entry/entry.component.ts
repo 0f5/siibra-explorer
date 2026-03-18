@@ -93,7 +93,7 @@ export class EntryComponent extends TPBRCategoryDirective implements AfterViewIn
         triplet.map((v, idx) => translateMm[idx] - v).join(",")
       ).reverse().join("/")
 
-      const tmpHost = `https://geom-svc.apps.ebrains.eu`
+      const tmpHost = `https://geom-svc.apps.ebrains.eu/spaces/allenccf_v3`
       const filename = `SST42_cloud.csv`
       return concat(
         of([]),
