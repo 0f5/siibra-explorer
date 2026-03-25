@@ -369,6 +369,23 @@
     <ng-template #viewFind>
         <mat-action-list role="list">
             
+            <ng-template sxplrExperimentalFlag [experimental]="true">
+
+            <mat-form-field>
+                <mat-label>fibre</mat-label>
+                <mat-select (selectionChange)="voiFeatureEntryCmp.showFibre($event.value)">
+                    <mat-option>select one</mat-option>
+                    <ng-template ngFor [ngForOf]="voiFeatureEntryCmp.fibers$ | async" let-fiber>
+                        <mat-option [value]="fiber.name">
+                            {{ fiber.label || fiber.name }}
+                        </mat-option>
+                    </ng-template>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-divider></mat-divider>
+            </ng-template>
+            
             <!-- point assignment -->
             <button mat-list-item
                 *ngIf="view.isVolumetric && view.currentViewport?.center"

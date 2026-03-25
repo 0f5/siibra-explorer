@@ -5,7 +5,7 @@ import { IDS, SAPI } from 'src/atlasComponents/sapi';
 import { Feature } from 'src/atlasComponents/sapi/sxplrTypes';
 import * as userInteraction from "src/state/userInteraction"
 import { CategoryAccDirective } from "../category-acc.directive"
-import { BehaviorSubject, combineLatest, concat, EMPTY, forkJoin, from, merge, of } from 'rxjs';
+import { BehaviorSubject, combineLatest, concat, EMPTY, forkJoin, from, merge, Observable, of } from 'rxjs';
 import { TranslatedFeature } from '../list/list.directive';
 import { MatDialog, MatSnackBar } from 'src/sharedModules/angularMaterial.exports';
 import { DestroyDirective } from 'src/util/directives/destroy.directive';
@@ -70,6 +70,57 @@ export class EntryComponent extends TPBRCategoryDirective implements AfterViewIn
     )),
     shareReplay(1),
   )
+
+  fibers$: Observable<{source: string, name: string, label: string}[]> = combineLatest([
+    this.store.pipe(
+      select(userPreference.selectors.showExperimental)
+    ),
+    this.TPRBbox$.pipe(
+      map(v => v?.template?.id)
+    )
+  ]).pipe(
+    switchMap(([ showExmptFlag, tmplid ]) => {
+      if (!showExmptFlag) {
+        return EMPTY
+      }
+      if (tmplid !== IDS.TEMPLATES.MNI152) {
+        return EMPTY
+      }
+      
+      const tmpHost = `http://localhost:8000/spaces/icbm152_nonlin_asym_2009c`
+      return fetch(tmpHost).then(res => res.json()).then(arr => arr.items.filter(v => v.source === "bucket"))
+    })
+  )
+
+  #loadedFibreLayer: any
+
+  showFibre(name: string){
+    
+    const encodedUri = encodeURIComponent(name)
+    const viewer = (window as any).viewer
+    const nehubaViewer = (window as any).nehubaViewer
+
+    if (this.#loadedFibreLayer) {
+      viewer.layerManager.removeManagedLayer(this.#loadedFibreLayer)
+      this.#loadedFibreLayer = null
+    }
+    
+    this.#loadedFibreLayer = viewer.layerManager.addManagedLayer(
+      viewer.layerSpecification.getLayer(name, {
+        type: 'segmentation',
+        source: {
+          url: `precomputed://http://localhost:8000/spaces/icbm152_nonlin_asym_2009c/${encodedUri}/0/0,0,0/1,1,1`,
+        },
+        segments: ["0"]
+      })
+    )
+    setTimeout(() => {
+      nehubaViewer.setMeshesToLoad([0], {
+        name
+      })
+    }, 160)
+    this.#loadedFibreLayer.layer.displayState.objectAlpha.restoreState(0.1)
+  }
 
   geometry$ = combineLatest([
     this.store.pipe(
