@@ -15,6 +15,8 @@ import { ExperimentalService } from 'src/experimental/experimental.service';
 import { BANLIST_CONNECTIVITY, EXPERIMENTAL_CONNECTIVITY, WHITELIST_CONNECTIVITY } from '../connectivity';
 import { TPBRCategoryDirective } from '../tpbrCategory.directive';
 
+const GEOMSVC_HOST = "https://geom-svc.apps.ebrains.eu"
+
 @Component({
   selector: 'sxplr-feature-entry',
   templateUrl: './entry.flattened.component.html',
@@ -87,7 +89,7 @@ export class EntryComponent extends TPBRCategoryDirective implements AfterViewIn
         return EMPTY
       }
       
-      const tmpHost = `http://localhost:8000/spaces/icbm152_nonlin_asym_2009c`
+      const tmpHost = `${GEOMSVC_HOST}/spaces/icbm152_nonlin_asym_2009c`
       return fetch(tmpHost).then(res => res.json()).then(arr => arr.items.filter(v => v.source === "bucket"))
     })
   )
@@ -109,7 +111,7 @@ export class EntryComponent extends TPBRCategoryDirective implements AfterViewIn
       viewer.layerSpecification.getLayer(name, {
         type: 'segmentation',
         source: {
-          url: `precomputed://http://localhost:8000/spaces/icbm152_nonlin_asym_2009c/${encodedUri}/0/0,0,0/1,1,1`,
+          url: `precomputed://${GEOMSVC_HOST}/spaces/icbm152_nonlin_asym_2009c/${encodedUri}/0/0,0,0/1,1,1`,
         },
         segments: ["0"]
       })
@@ -144,7 +146,7 @@ export class EntryComponent extends TPBRCategoryDirective implements AfterViewIn
         triplet.map((v, idx) => translateMm[idx] - v).join(",")
       ).reverse().join("/")
 
-      const tmpHost = `https://geom-svc.apps.ebrains.eu/spaces/allenccf_v3`
+      const tmpHost = `${GEOMSVC_HOST}/spaces/allenccf_v3`
       const filename = `SST42_cloud.csv`
       return concat(
         of([]),
