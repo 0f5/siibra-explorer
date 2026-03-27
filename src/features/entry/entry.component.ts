@@ -78,7 +78,8 @@ export class EntryComponent extends TPBRCategoryDirective implements AfterViewIn
       select(userPreference.selectors.showExperimental)
     ),
     this.TPRBbox$.pipe(
-      map(v => v?.template?.id)
+      map(v => v?.template?.id),
+      distinctUntilChanged(),
     )
   ]).pipe(
     switchMap(([ showExmptFlag, tmplid ]) => {
@@ -89,8 +90,12 @@ export class EntryComponent extends TPBRCategoryDirective implements AfterViewIn
         return EMPTY
       }
       
-      const tmpHost = `${GEOMSVC_HOST}/spaces/icbm152_nonlin_asym_2009c`
-      return fetch(tmpHost).then(res => res.json()).then(arr => arr.items.filter(v => v.source === "bucket"))
+      const tmpHost = `${GEOMSVC_HOST}/spaces/icbm152_nonlin_asym_2009c?size=100`
+      return fetch(tmpHost)
+        .then(res => res.json())
+        .then(arr => 
+          arr.items.filter(v => v.source === "bucket")
+        )
     })
   )
 
@@ -113,7 +118,12 @@ export class EntryComponent extends TPBRCategoryDirective implements AfterViewIn
         source: {
           url: `precomputed://${GEOMSVC_HOST}/spaces/icbm152_nonlin_asym_2009c/${encodedUri}/0/0,0,0/1,1,1`,
         },
-        segments: ["0"]
+        segments: ["0"],
+          skeletonRendering: {
+          mode2d: "lines",
+          lineWidth2d: 3,
+          mode3d: "lines"
+        },
       })
     )
     setTimeout(() => {
