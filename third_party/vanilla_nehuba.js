@@ -8,12 +8,19 @@
   const keys = [
     "zoomWithoutCtrl",
     "rightClickWithCtrl",
+    "zoomAtViewCentre",
   ]
   const config = {}
   for (const key of keys){
     if (searchParams.has(key)) {
       config[key] = true
     }
+  }
+
+  // why geese? have you seen how many geese there are in FZJ?
+  if (searchParams.has("geese")) {
+    config["zoomWithoutCtrl"] = true
+    config["zoomAtViewCentre"] = true
   }
   window.nehubaViewer = export_nehuba.createNehubaViewer(config, err => console.error(err))
 })()
