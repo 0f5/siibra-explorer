@@ -141,7 +141,7 @@ jobs:
       run: |
         echo "Git digest: ${{ env.GIT_DIGEST}} "
 
-        DOCKER_BUILT_TAG=${{ env.DOCKER_REGISTRY }}siibra-explorer:$BRANCH_NAME{{ os.suffix }}
+        DOCKER_BUILT_TAG=${{ env.DOCKER_REGISTRY }}siibra-explorer:${BRANCH_NAME}{{ matrix.suffix }}
         echo "Building $DOCKER_BUILT_TAG"
         docker build \
           --build-arg BUILD_HASH=${{ env.GIT_DIGEST }} \
