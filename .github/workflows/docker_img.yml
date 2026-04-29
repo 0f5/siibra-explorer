@@ -139,9 +139,9 @@ jobs:
     - id: 'build-docker-image'
       name: 'Build docker image'
       run: |
-        echo "Git digest: ${{ env.GIT_DIGEST}} "
+        echo "Git digest: ${{ env.GIT_DIGEST }} "
 
-        DOCKER_BUILT_TAG=${{ env.DOCKER_REGISTRY }}siibra-explorer:${BRANCH_NAME}{{ matrix.suffix }}
+        DOCKER_BUILT_TAG=${{ env.DOCKER_REGISTRY }}siibra-explorer:${BRANCH_NAME}${{ matrix.suffix }}
         echo "Building $DOCKER_BUILT_TAG"
         docker build \
           --build-arg BUILD_HASH=${{ env.GIT_DIGEST }} \
@@ -149,7 +149,7 @@ jobs:
           --build-arg MATOMO_ID=${{ env.MATOMO_ID }} \
           --build-arg SIIBRA_API_ENDPOINTS=${{ env.SIIBRA_API_STABLE }} \
           --build-arg EXPERIMENTAL_FEATURE_FLAG=${{ env.EXPERIMENTAL_FEATURE_FLAG }} \
-          --build-arg {{ matrix.build_arg }} \
+          --build-arg ${{ matrix.build_arg }} \
           -t $DOCKER_BUILT_TAG \
           .
         echo "Successfully built $DOCKER_BUILT_TAG"
