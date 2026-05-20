@@ -77,6 +77,14 @@ export class SapiViewsCoreRegionRegionRich extends SapiViewsCoreRegionRegionBase
             // --> sudden change of UI, highly discouraged (almost bait and switch)
             // 2b. we wait until **both** calls return
             // --> user could be waiting for a long time, staring at a spinner
+
+            // 20260520: we are deliberately violating 2a. Bait and switch is better than giving the wrong info.
+            // maptype is sorted in such a way that statistical is sorted before labelled
+            maps.sort((m1, m2) => {
+              const v1 = m1?.maptype ? m1?.maptype.charCodeAt(0) : 0
+              const v2 = m2?.maptype ? m2?.maptype.charCodeAt(0) : 0
+              return v2 - v1
+            })
             return maps.map(m => {
               const indices = m.indices[region.name] || []
               return indices
