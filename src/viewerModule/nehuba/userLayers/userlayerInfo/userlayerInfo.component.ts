@@ -7,6 +7,7 @@ import { MediaQueryDirective } from "src/util/directives/mediaQuery.directive";
 import { Action } from "src/util/types";
 import { CommonModule } from "@angular/common";
 import { AngularMaterialModule } from "src/sharedModules";
+import { IconComponent } from "src/sharedModules/icon";
 
 export type UserLayerInfoData = {
   layerName: string
@@ -29,6 +30,7 @@ export type UserLayerInfoData = {
   imports: [
     CommonModule,
     AngularMaterialModule,
+    IconComponent,
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,

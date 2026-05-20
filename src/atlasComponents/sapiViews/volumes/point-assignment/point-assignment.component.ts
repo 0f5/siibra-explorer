@@ -15,10 +15,6 @@ import { atlasSelection } from 'src/state';
 const DOING_PROB_ASGMT = "Performing probabilistic assignment ..."
 const DOING_LABEL_ASGMT = "Probabilistic assignment failed. Performing labelled assignment ..."
 
-const LABELLED_MAP_ASSIGNMENT_REGRESSION = `Labelled point assignment is currently experiencing some regression. For more detail, please visit
-
-[https://siibra-explorer.readthedocs.io/en/stable/releases/v2.14.12/](https://siibra-explorer.readthedocs.io/en/stable/releases/v2.14.12/)`
-
 @Component({
   selector: 'sxplr-point-assignment',
   templateUrl: './point-assignment.component.html',
@@ -62,10 +58,8 @@ export class PointAssignmentComponent implements OnDestroy {
   @Output()
   clickOnRegionName = new EventEmitter<{ target: string, event: MouseEvent }>()
 
-  warningMessage$ = this.busy$.pipe(
-    filter(busyWith => !!busyWith),
-    map(busyWith => busyWith === DOING_LABEL_ASGMT && LABELLED_MAP_ASSIGNMENT_REGRESSION)
-  )
+  // no warnings for now
+  warningMessage$ = EMPTY
 
   df$: Observable<PathReturn<"/map/assign">> = combineLatest([
     this.point$,
