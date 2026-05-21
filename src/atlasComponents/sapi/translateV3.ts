@@ -235,12 +235,25 @@ class TranslateV3 {
     return this.#atlasMap.get(atlas.id)
   }
   async translateAtlas(atlas:PathReturn<"/atlases/{atlas_id}">): Promise<SxplrAtlas> {
-    this.#atlasMap.set(atlas["@id"], atlas)
+    
+    // temporary fix to map atlas name
+    // can be removed when https://jugit.fz-juelich.de/t.dickscheid/brainscapes-configurations/-/merge_requests/137 is merged and released to siibra-api
+    const nameMappings: Record<string, string> = {
+      "Multilevel Human Atlas": "Human Atlas",
+      "Monkey Atlas": "Macaques Atlas"
+    }
+    const name = nameMappings[atlas.name] || atlas.name
+    const replacedAtlas = {
+      ...atlas,
+      ...{name}
+    }
+    console.log(atlas, replacedAtlas)
+    this.#atlasMap.set(atlas["@id"], replacedAtlas)
     return {
-      id: atlas["@id"],
+      id: replacedAtlas["@id"],
       type: "SxplrAtlas",
-      name: atlas.name,
-      species: atlas.species
+      name: replacedAtlas.name,
+      species: replacedAtlas.species
     }
   }
 
