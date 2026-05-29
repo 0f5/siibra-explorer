@@ -9,6 +9,7 @@ import { ClickInterceptor, CLICK_INTERCEPTOR_INJECTOR } from "src/util";
 import { isVoiData } from "./guards"
 import { HOVER_INTERCEPTOR_INJECTOR, HoverInterceptor, THoverConfig } from "src/util/injectionTokens";
 import { AnnotationDirective } from "src/atlasComponents/annotations/annotation.directive";
+import { UserLayerService } from "src/viewerModule/nehuba/userLayers/service";
 
 type TripletNum = [number, number, number]
 
@@ -75,6 +76,17 @@ export class VoiBboxDirective {
     )
   }
 
+  @Input()
+  set volumes(urls: string[]) {
+    if (!urls) {
+      return
+    }
+    console.log(urls)
+    for (const url of urls){
+      this.userLayerSvc.handleUserInput(url)
+    }
+  }
+
   #boxedGeometry$ = concat(
     of([] as VoiFeature[]),
     this.#features$
@@ -97,6 +109,7 @@ export class VoiBboxDirective {
     clickInterceptor: ClickInterceptor,
     @Optional() @Inject(HOVER_INTERCEPTOR_INJECTOR) 
     private hoverInterceptor: HoverInterceptor,
+    private userLayerSvc: UserLayerService,
   ){
 
     this.#annotationDirective.annotationColor = VoiBboxDirective.VOI_ANNOTATION_COLOR

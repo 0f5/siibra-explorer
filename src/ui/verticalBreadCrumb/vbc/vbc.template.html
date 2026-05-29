@@ -417,6 +417,7 @@
             <div *ngIf="switchdir.switchState$ | async"
                 voiBbox
                 [geometry]="voiFeatureEntryCmp.geometry$ | async"
+                [volumes]="voiFeatureEntryCmp.volumes$ | async"
                 [features]="voiFeatureEntryCmp.features$ | async">
             </div>
 

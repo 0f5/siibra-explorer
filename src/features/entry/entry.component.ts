@@ -134,6 +134,32 @@ export class EntryComponent extends TPBRCategoryDirective implements AfterViewIn
     this.#loadedFibreLayer.layer.displayState.objectAlpha.restoreState(0.1)
   }
 
+  volumes$ = combineLatest([
+    this.store.pipe(
+      select(userPreference.selectors.showExperimental)
+    ),
+    this.TPRBbox$.pipe(
+      shareReplay(1)
+    ),
+  ]).pipe(
+    switchMap(([showExmptFlag, val]) => {
+      if (!showExmptFlag || !val) {
+        return of([])
+      }
+      
+      const { template, bbox } = val
+      if (template?.id !== IDS.TEMPLATES.AMBA_CCF_V3) {
+        return of([])
+      }
+      return of(["precomputed://https://data-proxy.ebrains.eu/api/v1/buckets/test-sept-22/20260529-SST42_cloud-volume/static/SST42_cloud"])
+
+      // const bboxStr = bbox.map(triplet => 
+      //   triplet.map((v, idx) => translateMm[idx] - v).join(",")
+      // ).reverse().join("/")
+
+    })
+  )
+
   geometry$ = combineLatest([
     this.store.pipe(
       select(userPreference.selectors.showExperimental)
