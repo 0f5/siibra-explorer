@@ -247,7 +247,6 @@ class TranslateV3 {
       ...atlas,
       ...{name}
     }
-    console.log(atlas, replacedAtlas)
     this.#atlasMap.set(atlas["@id"], replacedAtlas)
     return {
       id: replacedAtlas["@id"],

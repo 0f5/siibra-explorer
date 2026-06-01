@@ -7,6 +7,7 @@ type ShaderEnum =
   | "magma"
   | "inferno"
   | "jet"
+  | "rgba (4 channel)"
 /**
  * Preferred colormap in order of preference
  */

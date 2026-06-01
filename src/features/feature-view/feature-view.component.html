@@ -169,6 +169,50 @@
           [ng-layer-ctl-meta]="voi.ngVolume.meta"
           [ng-layer-ctl-show]="true">
         </ng-layer-ctl>
+
+        <ng-template sxplrExperimentalFlag [experimental]="true">
+          <ng-template [ngIf]="extraVol.additionalVoi$ | async" extra-voi-dir [voi]="voi" #extraVol="extraVol"
+            let-additionalVoi>
+        
+            <mat-form-field class="flex-grow-3">
+              <mat-label>
+                Visualize with a model
+              </mat-label>
+              <mat-select #vizSelect="matSelect">
+                <mat-option disabled selected>Select a model</mat-option>
+                <mat-option *ngFor="let aVoi of additionalVoi" [value]="aVoi.id">
+                  {{ aVoi.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+        
+            <ng-template ngFor [ngForOf]="additionalVoi" let-aVoi>
+              <ng-template [ngIf]="aVoi.id === vizSelect.value">
+                <button mat-icon-button sxplr-dialog [sxplr-dialog-size]="null" [sxplr-dialog-data]="{
+                                    title: aVoi.name,
+                                    desc: aVoi.desc,
+                                    actions: aVoi.link | mapToProperty : 'href'
+                                }">
+                  <i class="fas fa-info"></i>
+                </button>
+              </ng-template>
+            </ng-template>
+            <button mat-icon-button color="warn" (click)="vizSelect.value = null" [disabled]="!vizSelect.value">
+              <i class="fas fa-times"></i>
+            </button>
+        
+            <ng-template ngFor [ngForOf]="additionalVoi" let-aVoi>
+              <ng-template [ngIf]="aVoi.id === vizSelect.value">
+                <mat-divider></mat-divider>
+                <ng-layer-ctl [ng-layer-ctl-name]="'lvl2-' + aVoi.ngVolume.url" [ng-layer-ctl-src]="aVoi.ngVolume.url"
+                  [ng-layer-ctl-transform]="aVoi.ngVolume.transform" [ng-layer-ctl-meta]="aVoi.ngVolume.meta"
+                  [ng-layer-ctl-opacity]="1.0">
+                </ng-layer-ctl>
+              </ng-template>
+            </ng-template>
+          </ng-template>
+
+        </ng-template>
       </mat-tab>
     </ng-template>
 

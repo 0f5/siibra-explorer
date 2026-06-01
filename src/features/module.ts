@@ -28,6 +28,7 @@ import { DialogModule } from "src/ui/dialogInfo";
 import { CodeSnippet } from "src/atlasComponents/sapi/codeSnippets/codeSnippet.directive";
 import { ExperimentalFlagDirective } from "src/experimental/experimental-flag.directive";
 import { ExperimentalService } from "src/experimental/experimental.service";
+import { ExtraVoiDirective } from "./xtraVoi.directive";
 
 @NgModule({
   imports: [
@@ -47,6 +48,7 @@ import { ExperimentalService } from "src/experimental/experimental.service";
      * standalone components
      */
     PlotlyComponent,
+    ExtraVoiDirective,
     // AtlasColorMapIntents,
     TPBRViewCmp,
     CodeSnippet,
