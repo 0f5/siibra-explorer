@@ -643,8 +643,12 @@ export class NehubaViewerUnit {
           ...rest,
           ...(transform ? { transform } : {})
         }
+        let insertIndex = 1
+        if (key.startsWith("lvl2-")){
+          insertIndex = 2
+        }
         viewer.layerManager.addManagedLayer(
-          viewer.layerSpecification.getLayer(key, combined), 1)
+          viewer.layerSpecification.getLayer(key, combined), insertIndex)
 
         return layerObj[key]
       })
