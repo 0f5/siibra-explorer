@@ -15,3 +15,4 @@ As siibra-explorer uses [webpack define plugin](https://webpack.js.org/plugins/d
 | `KIOSK_MODE` | after 5 minutes of inactivity, shows overlay inviting users to interact | `false` | `true` |
 | `EXPERIMENTAL_FEATURE_FLAG` | enabling experimental features | `false` | `true` |
 | `ENABLE_LEAP_MOTION` | enable leap motion controller | `false` | `true` |
+| `ENABLE_HTC_VIVE` | enable htc vive tracker controller | `false` | `true` |

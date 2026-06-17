@@ -1,0 +1,30 @@
+<ng-template [ngIf]="ready$ | async">
+  <ng-template [ngTemplateOutlet]="leapCtrlTmpl"></ng-template>
+</ng-template>
+
+
+<ng-template #leapCtrlTmpl>
+
+  <mat-card>
+    <span *ngIf="gestureText$ | async as text"> // what is this?
+      {{ text }}
+    </span>
+    <!-- detecting hand -->
+    <ng-template [ngTemplateOutlet]="(handDetected$ | async) ? handFound : noHandFound">
+    </ng-template>
+  </mat-card>
+  
+  <ng-template #handFound>
+    <span class="fa-stack fa-2x">
+      <i class="vive?"></i>
+    </span>
+  </ng-template>
+  
+  <ng-template #noHandFound>
+    <span class="fa-stack fa-2x">
+      <i class="vive?"></i>
+      <i class="vive?"></i>
+    </span>
+  </ng-template>
+  
+</ng-template>

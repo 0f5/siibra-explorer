@@ -24,6 +24,9 @@ ENV EXPERIMENTAL_FEATURE_FLAG=${EXPERIMENTAL_FEATURE_FLAG:-false}
 ARG ENABLE_LEAP_MOTION
 ENV ENABLE_LEAP_MOTION=${ENABLE_LEAP_MOTION:-false}
 
+ARG ENABLE_HTC_VIVE
+ENV ENABLE_HTC_VIVE=${ENABLE_HTC_VIVE:-false}
+
 # mkdir, and copy package.json and package-lock.json and npm i
 # to effectively use the caching layer
 
