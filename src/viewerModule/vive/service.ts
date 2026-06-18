@@ -31,17 +31,48 @@ type Hand = {
 @Injectable()
 export class ViveService{
 
+  public ready$ = new BehaviorSubject(false)
+
+  public currentpose$ = new Subject<string>()
+  public connected$ = new BehaviorSubject<string>("disconnected (connecting)")
+
+  private vec3: any
+  private quat: any
+  
+
   constructor(
     @Optional() @Inject(NEHUBA_INSTANCE_INJTKN) private nehubaInst$: Observable<NehubaViewerUnit>,
     @Inject(DOCUMENT) document: Document,
   ){
+    let ws: WebSocket | null = null;
 
-    const ws = new WebSocket("ws://localhost:8765");
+    try {
+      ws = new WebSocket("ws://localhost:8765");
 
-    ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      //handleFrame(data);
-    };
+      ws.onopen = () => {
+        this.connected$.next("connected");
+      }
+      
+      ws.onerror = (event) => {
+        console.warn("ViveService: websocket error", event);
+        this.connected$.next("disconnected (websocket error)");
+      };
+
+      ws.onclose = (event) => {
+        console.warn("ViveService: websocket closed", event);
+        this.connected$.next("disconnected (websocket closed)");
+      };
+
+      ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        this.handleFrame(data);
+      };
+    } catch (error) {
+      console.warn("ViveService: websocket connection failed", error);
+    }
+
+    this.ready$.next(true);
+
   }
 
 
@@ -49,8 +80,7 @@ export class ViveService{
     
   }
 
-  ⁄
   private setpose (pose : any){
-    
+
   }
 }

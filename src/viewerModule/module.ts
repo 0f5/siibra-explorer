@@ -82,7 +82,6 @@ import { AtlasViewerRouterModule } from "src/routerModule";
     TPBRViewCmp,
 
     HTCViveModule,
-    
     ...(environment.ENABLE_LEAP_MOTION ? [LeapModule] : []),
     //...(environment.ENABLE_HTC_VIVE ? [HTCViveModule] : [])
   ],
@@ -168,6 +167,7 @@ import { AtlasViewerRouterModule } from "src/routerModule";
   ],
   exports: [
     ViewerCmp,
+    HTCViveModule
   ],
 })
 

@@ -23,9 +23,7 @@ import { ViveControlViewRef } from "./signal.directive";
     {
       provide: APP_INITIALIZER,
       useFactory(document: Document){
-        const scel = document.createElement("script")
-        scel.src = "leap-0.6.4.js"
-        document.head.appendChild(scel)
+        
         return () => Promise.resolve()
       },
       deps: [
