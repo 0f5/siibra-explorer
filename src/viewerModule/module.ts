@@ -27,6 +27,7 @@ import { LogoContainer } from "src/ui/logoContainer/logoContainer.component";
 import { FloatingMouseContextualContainerDirective } from "src/util/directives/floatingMouseContextualContainer.directive";
 import { ShareModule } from "src/share";
 import { LeapModule } from "./leap/module";
+import { HTCViveModule } from "./vive/module";
 
 import { environment } from "src/environments/environment"
 import { ATPSelectorModule } from "src/atlasComponents/sapiViews/core/rich/ATPSelector";
@@ -79,8 +80,10 @@ import { AtlasViewerRouterModule } from "src/routerModule";
     FloatingMouseContextualContainerDirective,
     ExperimentalFlagDirective,
     TPBRViewCmp,
-    
-    ...(environment.ENABLE_LEAP_MOTION ? [LeapModule] : [])
+
+    HTCViveModule,
+    ...(environment.ENABLE_LEAP_MOTION ? [LeapModule] : []),
+    //...(environment.ENABLE_HTC_VIVE ? [HTCViveModule] : [])
   ],
   declarations: [
     ViewerCmp,
@@ -164,6 +167,7 @@ import { AtlasViewerRouterModule } from "src/routerModule";
   ],
   exports: [
     ViewerCmp,
+    HTCViveModule
   ],
 })
 

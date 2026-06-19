@@ -32,6 +32,7 @@ const main = async () => {
     SIIBRA_API_ENDPOINTS,
     EXPERIMENTAL_FEATURE_FLAG,
     ENABLE_LEAP_MOTION,
+    ENABLE_HTC_VIVE,
   } = process.env
   
   const version = JSON.stringify(
@@ -61,6 +62,7 @@ const main = async () => {
     SIIBRA_API_ENDPOINTS,
     EXPERIMENTAL_FEATURE_FLAG,
     ENABLE_LEAP_MOTION,
+    ENABLE_HTC_VIVE,
 
     VERSION: version,
     GIT_HASH: gitHash,
@@ -79,6 +81,7 @@ export const environment = {
   MATOMO_ID: ${JSON.stringify(MATOMO_ID)},
   EXPERIMENTAL_FEATURE_FLAG: ${EXPERIMENTAL_FEATURE_FLAG},
   ENABLE_LEAP_MOTION: ${ENABLE_LEAP_MOTION}
+  ENABLE_HTC_VIVE: ${ENABLE_HTC_VIVE}
 }
 `
   await asyncWrite(pathToEnvFile, outputTxt, 'utf-8')

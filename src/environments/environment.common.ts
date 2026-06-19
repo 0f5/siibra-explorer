@@ -25,4 +25,5 @@ export const environment = {
   EXPERIMENTAL_FEATURE_FLAG: true,
 
   ENABLE_LEAP_MOTION: false,
+  ENABLE_HTC_VIVE: true,
 }

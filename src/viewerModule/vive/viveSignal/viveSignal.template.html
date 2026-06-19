@@ -1,0 +1,22 @@
+<ng-template [ngIf]="ready$ | async">
+  <ng-template [ngTemplateOutlet]="viveCtrlTmpl"></ng-template>
+</ng-template>
+
+
+<ng-template #viveCtrlTmpl>
+
+  <mat-card>
+    <span *ngIf="connected$ | async as text">
+      {{ text }}
+    </span>
+  </mat-card>
+
+
+  <mat-card>
+    <span *ngIf="currpose$ | async as text">
+      {{ text }}
+    </span>
+  </mat-card>
+  
+  
+</ng-template>

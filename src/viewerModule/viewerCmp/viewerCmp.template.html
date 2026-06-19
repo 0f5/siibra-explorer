@@ -304,6 +304,10 @@
   <iav-cmp-viewer-nehuba-status *ngIf="(useViewer$ | async) === 'nehuba'"
     class="pe-all sxplr-mt-1 muted-7 d-inline-block v-align-top">
   </iav-cmp-viewer-nehuba-status>
+  <htc-vive-tracker-status  *ngIf="(useViewer$ | async) === 'nehuba'"
+    class="pe-all sxplr-mt-1 muted-7 d-inline-block v-align-top">
+  </htc-vive-tracker-status>
+
   <button
     mat-icon-button
     sxplr-share-view
