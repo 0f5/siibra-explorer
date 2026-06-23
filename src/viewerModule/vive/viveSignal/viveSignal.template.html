@@ -6,6 +6,10 @@
 <ng-template #viveCtrlTmpl>
 
   <mat-card>
+    <span> vive tracker status</span>
+  </mat-card>
+
+  <mat-card>
     <span *ngIf="connected$ | async as text">
       {{ text }}
     </span>
@@ -13,7 +17,13 @@
 
 
   <mat-card>
-    <span *ngIf="currpose$ | async as text">
+    <span *ngIf="currentpos$ | async as text">
+      {{ text }}
+    </span>
+  </mat-card>
+
+  <mat-card>
+    <span *ngIf="currentquad$ | async as text">
       {{ text }}
     </span>
   </mat-card>

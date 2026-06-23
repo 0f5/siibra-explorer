@@ -15,11 +15,8 @@ export class ViveSignal{
   public connected$ = this.svc.connected$.pipe(
     map(hands => hands)
   )
-  public currpose$ = this.svc.currentpose$.pipe(
-    map(currpose => {
-      return currpose
-    })
-  )
+  public currentpos$ = this.svc.currentpos$.pipe(c=>c)
+  public currentquad$ = this.svc.currentquad$.pipe(c=>c)
   constructor(
     private svc: ViveService
   ){

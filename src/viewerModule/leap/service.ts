@@ -119,9 +119,6 @@ export class LeapService{
       this.vec3 = (window as any).export_nehuba.vec3
       this.quat = (window as any).export_nehuba.quat
       
-      this.rotation = this.quat.create()
-      this.WORLD_UP = this.vec3.fromValues(0, 1, 0)
-      this.WORLD_RIGHT = this.vec3.fromValues(1, 0, 0)
     })
 
     this.nehubaInst$.pipe(
