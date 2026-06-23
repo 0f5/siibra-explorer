@@ -39,8 +39,10 @@ export class ViveService{
 
   private vec3: any
   private quat: any
+
+  private quat_current : any
+  private quat_offset = null
   
-  private quat_offset = [0.0, -0.0, 0.0, 1.0]
   private reconnectTimer: any = null;
   private nehubaInst2: Observable<NehubaViewerUnit>
 
@@ -56,13 +58,48 @@ export class ViveService{
     ).subscribe(() => {
       this.vec3 = (window as any).export_nehuba.vec3
       this.quat = (window as any).export_nehuba.quat
+
+        
+      this.quat_offset = this.quat.create();
+      
+      this.quat_offset = this.quat.fromValues(
+        0,
+        0,
+        0,
+        1
+      );
+
+      this.quat_current = this.quat.create();
+      
     })
+
+    interval(10000).subscribe(
+      () => {
+        this.zero_view()
+      }
+    )
 
 
     console.log("ViveService: starting HTC Vive Tracker Service");
     this.connectWebSocket();
     this.ready$.next(true);
     this.nehubaInst2 = nehubaInst$
+
+  }
+
+
+  private zero_view(){
+      console.log("zeroing view")
+      if(this.quat_current == null || this.quat_offset == null){
+        return;
+      }
+
+      var inverse = this.quat.create(); 
+      this.quat.invert(inverse, this.quat_current);
+
+      this.quat_offset = this.quat.create();
+      this.quat.copy(this.quat_offset, inverse);
+
   }
 
   private connectWebSocket(): void {
@@ -123,10 +160,6 @@ export class ViveService{
         const pose = inst.nehubaViewer.ngviewer.navigationState.pose;
         var orient = inst.nehubaViewer.ngviewer.perspectiveNavigationState.pose.orientation
 
-        //console.log(this.vec3, Array.isArray(this.vec3))
-        //pose.position.coordinates = this.vec3;
-        //console.log(this.quat, Array.isArray(this.vec3))
-        //pose.orientation = this.quat;
 
         /* 
         xyzw  - no
@@ -171,6 +204,8 @@ export class ViveService{
           rotation.y ?? 1,
           rotation.z ?? 0,
         );
+        this.quat.copy(this.quat_current, newquat )
+
         var newpos = [
           position.x ?? 0,
           position.y ?? 0,
@@ -178,23 +213,26 @@ export class ViveService{
         ];
         
 
-        var offset_quat = this.quat.fromValues(
-          this.quat_offset[0],
-          this.quat_offset[1],
-          this.quat_offset[2],
-          this.quat_offset[3]
-        );
+
 
         const rot = this.quat.create();
-        this.quat.setAxisAngle(rot, [0, 1, 0], Math.PI / 2);
+        this.quat.setAxisAngle(rot, [0, 1, 0],  Math.PI );
+
+        const rot2 = this.quat.create();
+        this.quat.setAxisAngle(rot2, [1, 0, 0],  - 0.5 * Math.PI );
+        
+        //this.quat.multiply(zero, rot, zero )
+        //this.quat.multiply(zero, rot2, zero )
 
         //this.quat.multiply(offset_quat, offset_quat, rot)
 
+        
+
         this.quat.copy(orient.orientation, newquat)
-        this.quat.multiply(orient.orientation, orient.orientation, offset_quat)
+        this.quat.multiply(orient.orientation, this.quat_offset, orient.orientation)
 
         this.quat.multiply(orient.orientation, rot, orient.orientation )
-
+        this.quat.multiply(orient.orientation, rot2, orient.orientation )
 
 
         pose.changed.dispatch();
@@ -207,7 +245,7 @@ export class ViveService{
 
         this.currentpos$.next(`pos:${vec3Formatted.join(",")}`);
         this.currentquad$.next(`rot:${quatFormatted.join(",")}`);
-      });
 
+      });
   }
 }
